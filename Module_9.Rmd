@@ -1,0 +1,51 @@
+---
+title: "Module_9"
+author: "Erin Anderson"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+n <- 1000
+mu <- 3.5
+sigma <- 4
+v <- rnorm(n, mu, sigma)
+s <- sample(v, size = 30, replace = FALSE)
+m <- mean(s)
+m
+sd <- sd(s)
+sd
+sem <- sd(s)/sqrt(length(s))
+sem
+```
+
+``` {r 1, include=TRUE}
+lower <- m - qnorm(1 - 0.05/2) * sem  # (1-alpha)/2 each in the upper and lower tails of the distribution
+upper <- m + qnorm(1 - 0.05/2) * sem  # (1-alpha)/2 each in the upper and lower tails of the distribution
+ci <- c(lower, upper)
+ci
+```
+
+```{r 2, include=TRUE}
+lambda <- 14
+n <- 10
+pop_se <- sqrt(lambda/n)  # the estimated SE
+pop_se
+```
+
+``` {r 3, include=TRUE}
+x <- NULL
+for (i in 1:1000) {
+    x[i] <- mean(rpois(n = n, lambda = lambda))
+}
+hist(x, breaks = seq(from = lambda - 4 * sqrt(lambda)/sqrt(n), to = lambda +
+    4 * sqrt(lambda)/sqrt(n), length.out = 20), probability = TRUE)
+```
+
+``` {r 4, include=TRUE}
+sd <- sd(x)  # st dev of the sampling distribution
+sd
+qqnorm(x)
+qqline(x)
+```
+
